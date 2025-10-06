@@ -1,0 +1,114 @@
+<ion-menu side="start" menuId="main-menu" contentId="main-content">
+  <ion-header>
+    <ion-toolbar color="primary">
+      <ion-title>
+        <div class="menu-header">
+          <div class="logo-section">
+            <ion-icon name="shield-checkmark-outline" class="logo-icon"></ion-icon>
+            <div class="logo-text">
+              <h2>Synergy</h2>
+              <p>HR Management</p>
+            </div>
+          </div>
+          <ion-button fill="clear" size="small" class="collapse-btn">
+            <ion-icon name="chevron-down-outline"></ion-icon>
+          </ion-button>
+        </div>
+      </ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-content>
+    <!-- Main Navigation -->
+    <div class="menu-section">
+      <h3 class="section-title">MAIN</h3>
+      <ion-list>
+        <ion-item 
+          *ngFor="let item of menuItems" 
+          [class.active]="item.active"
+          button
+          (click)="onMenuItemClick(item)"
+          routerLink="{{ item.url }}">
+          <ion-icon 
+            [name]="item.icon" 
+            slot="start" 
+            [class.active-icon]="item.active">
+          </ion-icon>
+          <ion-label>{{ item.title }}</ion-label>
+          <ion-badge 
+            *ngIf="item.badge" 
+            color="primary" 
+            slot="end">
+            {{ item.badge }}
+          </ion-badge>
+          <ion-icon 
+            *ngIf="item.active" 
+            name="chevron-forward" 
+            slot="end" 
+            class="active-arrow">
+          </ion-icon>
+        </ion-item>
+      </ion-list>
+    </div>
+
+    <!-- Recent Items -->
+    <div class="menu-section">
+      <h3 class="section-title">RECENTS</h3>
+      <ion-list>
+        <ion-item 
+          *ngFor="let item of recentItems" 
+          button
+          (click)="onRecentItemClick(item)">
+          <div class="recent-item">
+            <div class="recent-dot" [class]="'dot-' + item.color"></div>
+            <div class="recent-content">
+              <ion-label>{{ item.title }}</ion-label>
+              <p class="recent-subtitle">{{ item.subtitle }}</p>
+            </div>
+            <span class="shortcut">{{ item.shortcut }}</span>
+          </div>
+        </ion-item>
+      </ion-list>
+    </div>
+
+    <!-- Settings Section -->
+    <div class="menu-section">
+      <ion-list>
+        <ion-item button (click)="onSettingsClick()">
+          <ion-icon name="settings-outline" slot="start"></ion-icon>
+          <ion-label>Settings</ion-label>
+        </ion-item>
+        <ion-item button>
+          <ion-icon name="notifications-outline" slot="start"></ion-icon>
+          <ion-label>Setup</ion-label>
+        </ion-item>
+      </ion-list>
+    </div>
+
+    <!-- User Profile Section -->
+    <div class="user-section">
+      <ion-item class="user-profile">
+        <ion-avatar slot="start">
+          <img src="https://via.placeholder.com/40x40/4c8dff/ffffff?text=SW" alt="User Avatar">
+        </ion-avatar>
+        <div class="user-info">
+          <ion-label>
+            <h3>Sophia Williams</h3>
+            <p>sophia@alignui.com</p>
+          </ion-label>
+          <div class="user-badges">
+            <ion-badge color="success" class="verified-badge">
+              <ion-icon name="checkmark"></ion-icon>
+            </ion-badge>
+            <ion-icon name="chevron-forward" class="user-arrow"></ion-icon>
+          </div>
+        </div>
+      </ion-item>
+      
+      <ion-item button class="logout-item" (click)="onLogoutClick()">
+        <ion-icon name="log-out-outline" slot="start" color="danger"></ion-icon>
+        <ion-label color="danger">Logout</ion-label>
+      </ion-item>
+    </div>
+  </ion-content>
+</ion-menu>

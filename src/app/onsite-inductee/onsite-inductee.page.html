@@ -1,0 +1,277 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>
+      <div class="header-content">
+        <div class="header-main">
+          <ion-icon name="people-outline" class="header-icon"></ion-icon>
+          <div class="header-text">
+            <h1>Synergy HR Management</h1>
+            <p>Onsite Inductee Management System</p>
+          </div>
+        </div>
+      </div>
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <div class="content-wrapper">
+    <!-- Page Header -->
+    <div class="page-header">
+      <div class="page-title">
+        <h2>Onsite Inductee</h2>
+        <p>Lorem ipsum dolor sit amet consectetur. Felis massa diam rhoncus aenean</p>
+      </div>
+      <ion-badge color="light" class="info-badge">
+        <ion-icon name="copy-outline"></ion-icon>
+      </ion-badge>
+    </div>
+
+    <!-- Search and Actions -->
+    <div class="search-actions-container">
+      <div class="search-container">
+        <ion-searchbar
+          [(ngModel)]="searchTerm"
+          (ionInput)="onSearchChange($event)"
+          placeholder="Search..."
+          show-clear-button="focus"
+          debounce="300">
+        </ion-searchbar>
+      </div>
+      
+      <div class="actions-container">
+        <ion-button fill="clear" size="small" (click)="onFilter()">
+          <ion-icon name="funnel-outline" slot="start"></ion-icon>
+          Filter
+        </ion-button>
+        <ion-button fill="clear" size="small" color="success" (click)="onExport()">
+          <ion-icon name="download-outline" slot="start"></ion-icon>
+          Export
+        </ion-button>
+        <ion-button fill="clear" size="small" (click)="onEmail()">
+          <ion-icon name="mail-outline" slot="start"></ion-icon>
+          Email
+        </ion-button>
+        <ion-button fill="clear" size="small" (click)="onSendRequest()">
+          <ion-icon name="send-outline" slot="start"></ion-icon>
+          Send Request
+        </ion-button>
+        <ion-button fill="clear" size="small" (click)="onQRCode()">
+          <ion-icon name="qr-code-outline" slot="start"></ion-icon>
+          QR Code
+        </ion-button>
+        <ion-button fill="solid" size="small" color="primary" (click)="onAddNew()">
+          <ion-icon name="add" slot="start"></ion-icon>
+          Add New
+        </ion-button>
+      </div>
+    </div>
+
+    <!-- Table Status -->
+    <div class="table-status">
+      <div class="status-left">
+        <span class="active-tab">All Onsite Inductee</span>
+        <span class="inactive-tab">Inductees moved to Supplier Staff</span>
+      </div>
+    </div>
+
+    <!-- Desktop Table View -->
+    <div class="table-container desktop-only">
+      <div class="table-scroll">
+        <ion-grid class="data-table">
+          <!-- Table Header -->
+          <ion-row class="table-header">
+            <ion-col size="1" class="header-cell">
+              <ion-checkbox></ion-checkbox>
+            </ion-col>
+            <ion-col size="1" class="header-cell">Id</ion-col>
+            <ion-col size="2" class="header-cell">Name</ion-col>
+            <ion-col size="2" class="header-cell">Inductions</ion-col>
+            <ion-col size="1.5" class="header-cell">Documents</ion-col>
+            <ion-col size="1.5" class="header-cell">Role</ion-col>
+            <ion-col size="1.5" class="header-cell">Company</ion-col>
+            <ion-col size="1.5" class="header-cell">Actions</ion-col>
+          </ion-row>
+
+          <!-- Table Rows -->
+          <ion-row *ngFor="let inductee of getPaginatedInductees()" class="table-row">
+            <ion-col size="1" class="data-cell">
+              <ion-checkbox></ion-checkbox>
+            </ion-col>
+            <ion-col size="1" class="data-cell">
+              <span class="id-text">{{ inductee.id }}</span>
+            </ion-col>
+            <ion-col size="2" class="data-cell">
+              <div class="name-cell">
+                <strong>{{ inductee.name }}</strong>
+                <div class="email">{{ inductee.email }}</div>
+              </div>
+            </ion-col>
+            <ion-col size="2" class="data-cell">
+              <ion-badge [color]="getStatusColor(inductee.inductions.status)" class="status-badge">
+                <ion-icon name="checkmark-circle" *ngIf="inductee.inductions.status === 'All Completed'"></ion-icon>
+                <ion-icon name="close-circle" *ngIf="inductee.inductions.status === 'All Pending'"></ion-icon>
+                <ion-icon name="time" *ngIf="inductee.inductions.status === 'Partially Completed'"></ion-icon>
+                <ion-icon name="remove-circle" *ngIf="inductee.inductions.status === 'None Assigned'"></ion-icon>
+                {{ inductee.inductions.status }}
+              </ion-badge>
+            </ion-col>
+            <ion-col size="1.5" class="data-cell">
+              <div class="documents-cell">
+                <ion-icon 
+                  name="document" 
+                  [color]="getDocumentColor(inductee.documents.color)"
+                  class="document-icon">
+                </ion-icon>
+                <ion-badge 
+                  [color]="getDocumentColor(inductee.documents.color)" 
+                  class="document-count">
+                  {{ inductee.documents.count }}
+                </ion-badge>
+              </div>
+            </ion-col>
+            <ion-col size="1.5" class="data-cell">
+              <span>{{ inductee.role }}</span>
+            </ion-col>
+            <ion-col size="1.5" class="data-cell">
+              <span>{{ inductee.company }}</span>
+            </ion-col>
+            <ion-col size="1.5" class="data-cell">
+              <div class="action-buttons">
+                <ion-button fill="clear" size="small" (click)="onEdit(inductee)">
+                  <ion-icon name="pencil" color="medium"></ion-icon>
+                </ion-button>
+                <ion-button fill="clear" size="small" (click)="onView(inductee)">
+                  <ion-icon name="eye" color="medium"></ion-icon>
+                </ion-button>
+                <ion-button fill="clear" size="small" (click)="onEmailInductee(inductee)">
+                  <ion-icon name="mail" color="medium"></ion-icon>
+                </ion-button>
+              </div>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </div>
+    </div>
+
+    <!-- Mobile Card View -->
+    <div class="mobile-only" >
+      <ion-card *ngFor="let inductee of getPaginatedInductees()" class="inductee-card">
+        <ion-card-header>
+          <div class="card-header">
+            <div class="card-title">
+              <ion-card-title>{{ inductee.name }}</ion-card-title>
+              <ion-card-subtitle>{{ inductee.email }}</ion-card-subtitle>
+            </div>
+            <div class="card-id">
+              <ion-badge color="light">{{ inductee.id }}</ion-badge>
+            </div>
+          </div>
+        </ion-card-header>
+        
+        <ion-card-content>
+          <div class="card-content">
+            <div class="card-row">
+              <span class="label">Role:</span>
+              <span class="value">{{ inductee.role }}</span>
+            </div>
+            <div class="card-row">
+              <span class="label">Company:</span>
+              <span class="value">{{ inductee.company }}</span>
+            </div>
+            <div class="card-row">
+              <span class="label">Mobile:</span>
+              <span class="value">{{ inductee.mobile }}</span>
+            </div>
+            <div class="card-row">
+              <span class="label">Notified:</span>
+              <span class="value">{{ inductee.notified }}</span>
+            </div>
+            <div class="card-row">
+              <span class="label">Inductions:</span>
+              <ion-badge [color]="getStatusColor(inductee.inductions.status)" class="status-badge-mobile">
+                {{ inductee.inductions.status }}
+              </ion-badge>
+            </div>
+            <div class="card-row">
+              <span class="label">Documents:</span>
+              <div class="documents-cell">
+                <ion-icon 
+                  name="document" 
+                  [color]="getDocumentColor(inductee.documents.color)"
+                  class="document-icon">
+                </ion-icon>
+                <ion-badge 
+                  [color]="getDocumentColor(inductee.documents.color)" 
+                  class="document-count">
+                  {{ inductee.documents.count }}
+                </ion-badge>
+              </div>
+            </div>
+            <div class="card-actions">
+              <ion-button fill="clear" size="small" (click)="onEdit(inductee)">
+                <ion-icon name="pencil" slot="start"></ion-icon>
+                Edit
+              </ion-button>
+              <ion-button fill="clear" size="small" (click)="onView(inductee)">
+                <ion-icon name="eye" slot="start"></ion-icon>
+                View
+              </ion-button>
+              <ion-button fill="clear" size="small" (click)="onEmailInductee(inductee)">
+                <ion-icon name="mail" slot="start"></ion-icon>
+                Email
+              </ion-button>
+            </div>
+          </div>
+        </ion-card-content>
+      </ion-card>
+    </div>
+
+    <!-- Pagination -->
+    <div class="pagination-container desktop-only">
+      <div class="pagination-info">
+        <span>Page {{ currentPage }} of {{ totalPages }}</span>
+      </div>
+      <div class="pagination-controls">
+        <ion-button 
+          fill="clear" 
+          size="small" 
+          [disabled]="currentPage === 1"
+          (click)="goToPage(currentPage - 1)">
+          <ion-icon name="chevron-back"></ion-icon>
+        </ion-button>
+        
+        <ion-button 
+          *ngFor="let page of getPaginationPages()"
+          [fill]="page === currentPage ? 'solid' : 'clear'"
+          [color]="page === currentPage ? 'primary' : 'medium'"
+          size="small"
+          [disabled]="page === -1"
+          (click)="page !== -1 && goToPage(page)">
+          {{ page === -1 ? '...' : page }}
+        </ion-button>
+        
+        <ion-button 
+          fill="clear" 
+          size="small" 
+          [disabled]="currentPage === totalPages"
+          (click)="goToPage(currentPage + 1)">
+          <ion-icon name="chevron-forward"></ion-icon>
+        </ion-button>
+      </div>
+      <div class="pagination-info">
+        <span>{{ filteredInductees.length }} / page</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add Inductee Modal -->
+  <app-add-inductee-modal
+    [isOpen]="isAddModalOpen"
+    (isOpenChange)="onModalClose()"
+    (inducteeAdded)="onInducteeAdded($event)">
+  </app-add-inductee-modal>
+</ion-content>

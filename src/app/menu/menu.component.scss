@@ -1,0 +1,279 @@
+// Menu Header Styling
+.menu-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.logo-section {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.logo-icon {
+  font-size: 24px;
+  color: var(--ion-color-primary-contrast);
+}
+
+.logo-text {
+  h2 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--ion-color-primary-contrast);
+  }
+  
+  p {
+    margin: 0;
+    font-size: 12px;
+    color: var(--ion-color-primary-contrast);
+    opacity: 0.8;
+  }
+}
+
+.collapse-btn {
+  --color: var(--ion-color-primary-contrast);
+  --padding-start: 8px;
+  --padding-end: 8px;
+}
+
+// Menu Sections
+.menu-section {
+  margin-bottom: 24px;
+  
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.section-title {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ion-color-medium);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin: 16px 16px 8px 16px;
+}
+
+// Menu Items
+ion-list {
+  padding: 0;
+}
+
+ion-item {
+  --padding-start: 16px;
+  --padding-end: 16px;
+  --inner-padding-end: 16px;
+  margin: 0 8px;
+  border-radius: 8px;
+  margin-bottom: 4px;
+  
+  &.active {
+    --background: var(--ion-color-primary);
+    --color: var(--ion-color-primary-contrast);
+    
+    ion-icon {
+      color: var(--ion-color-primary-contrast);
+    }
+    
+    ion-label {
+      color: var(--ion-color-primary-contrast);
+      font-weight: 600;
+    }
+  }
+  
+  &:hover:not(.active) {
+    --background: var(--ion-color-light);
+  }
+}
+
+.active-icon {
+  color: var(--ion-color-primary-contrast) !important;
+}
+
+.active-arrow {
+  color: var(--ion-color-primary-contrast);
+  font-size: 16px;
+}
+
+// Recent Items
+.recent-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+}
+
+.recent-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  
+  &.dot-primary {
+    background-color: var(--ion-color-primary);
+  }
+  
+  &.dot-danger {
+    background-color: var(--ion-color-danger);
+  }
+  
+  &.dot-success {
+    background-color: var(--ion-color-success);
+  }
+}
+
+.recent-content {
+  flex: 1;
+  
+  ion-label {
+    font-size: 14px;
+    font-weight: 500;
+  }
+}
+
+.recent-subtitle {
+  font-size: 12px;
+  color: var(--ion-color-medium);
+  margin: 2px 0 0 0;
+}
+
+.shortcut {
+  font-size: 11px;
+  color: var(--ion-color-medium);
+  background: var(--ion-color-light);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-family: monospace;
+}
+
+// User Section
+.user-section {
+  margin-top: auto;
+  padding-top: 16px;
+  border-top: 1px solid var(--ion-color-light-shade);
+}
+
+.user-profile {
+  --padding-start: 16px;
+  --padding-end: 16px;
+  margin: 0 8px 8px 8px;
+  border-radius: 8px;
+  
+  &:hover {
+    --background: var(--ion-color-light);
+  }
+}
+
+.user-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  
+  ion-label {
+    h3 {
+      margin: 0;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--ion-color-dark);
+    }
+    
+    p {
+      margin: 2px 0 0 0;
+      font-size: 12px;
+      color: var(--ion-color-medium);
+    }
+  }
+}
+
+.user-badges {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.verified-badge {
+  --background: var(--ion-color-success);
+  --color: var(--ion-color-success-contrast);
+  font-size: 10px;
+  padding: 2px 4px;
+  
+  ion-icon {
+    font-size: 10px;
+  }
+}
+
+.user-arrow {
+  color: var(--ion-color-medium);
+  font-size: 16px;
+}
+
+.logout-item {
+  --padding-start: 16px;
+  --padding-end: 16px;
+  margin: 0 8px;
+  border-radius: 8px;
+  
+  &:hover {
+    --background: var(--ion-color-light);
+  }
+  
+  ion-icon {
+    color: var(--ion-color-danger);
+  }
+  
+  ion-label {
+    color: var(--ion-color-danger);
+  }
+}
+
+// Badge Styling
+ion-badge {
+  font-size: 11px;
+  font-weight: 600;
+  min-width: 18px;
+  height: 18px;
+  border-radius: 9px;
+}
+
+// Responsive Design
+@media (max-width: 768px) {
+  .logo-text {
+    h2 {
+      font-size: 16px;
+    }
+    
+    p {
+      font-size: 11px;
+    }
+  }
+  
+  .section-title {
+    font-size: 11px;
+  }
+  
+  ion-item {
+    --padding-start: 12px;
+    --padding-end: 12px;
+    margin: 0 4px;
+  }
+  
+  .user-section {
+    padding-top: 12px;
+  }
+}
+
+// Dark mode adjustments (if needed)
+@media (prefers-color-scheme: dark) {
+  .recent-subtitle {
+    color: var(--ion-color-medium-shade);
+  }
+  
+  .shortcut {
+    background: var(--ion-color-step-100);
+    color: var(--ion-color-step-600);
+  }
+}

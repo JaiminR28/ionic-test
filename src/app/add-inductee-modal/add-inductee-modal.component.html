@@ -1,0 +1,204 @@
+<ion-modal [isOpen]="isOpen" (didDismiss)="onClose()">
+  <ng-template>
+    <ion-header>
+      <ion-toolbar>
+        <ion-title>
+          <div class="modal-header">
+            <ion-icon name="add-outline" class="header-icon"></ion-icon>
+            <div class="header-text">
+              <h2>Add New Onsite Inductee</h2>
+              <p>Enter staff details and assign induction programs.</p>
+            </div>
+          </div>
+        </ion-title>
+        <ion-buttons slot="end">
+          <ion-button fill="clear" (click)="onClose()">
+            <ion-icon name="close-outline"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
+
+    <ion-content class="modal-content">
+      <form [formGroup]="inducteeForm" class="inductee-form">
+        <!-- Personal Information Section -->
+        <div class="form-section">
+          <h3 class="section-title">Personal Information</h3>
+          
+          <div class="form-row">
+            <ion-item class="form-item">
+              <ion-label position="stacked">
+                First Name * (Min 2 and Max 32 Characters)
+              </ion-label>
+              <ion-input 
+                formControlName="firstName"
+                placeholder="Enter Name"
+                type="text">
+              </ion-input>
+            </ion-item>
+            
+            <ion-item class="form-item">
+              <ion-label position="stacked">
+                Last Name * (Min 2 and Max 32 Characters)
+              </ion-label>
+              <ion-input 
+                formControlName="lastName"
+                placeholder="Enter Last Name"
+                type="text">
+              </ion-input>
+            </ion-item>
+          </div>
+
+          <div class="form-row">
+            <ion-item class="form-item">
+              <ion-label position="stacked">Mobile *</ion-label>
+              <div class="mobile-input">
+                <ion-select 
+                  formControlName="countryCode"
+                  interface="popover"
+                  class="country-select">
+                  <ion-select-option 
+                    *ngFor="let country of countryCodes" 
+                    [value]="country.code">
+                    {{ country.code }}
+                  </ion-select-option>
+                </ion-select>
+                <ion-input 
+                  formControlName="mobile"
+                  placeholder="(555) 000-000"
+                  type="tel"
+                  class="mobile-number">
+                </ion-input>
+              </div>
+            </ion-item>
+            
+            <ion-item class="form-item">
+              <ion-label position="stacked">Email</ion-label>
+              <ion-input 
+                formControlName="email"
+                placeholder="example@company.com"
+                type="email">
+                <ion-icon name="mail-outline" slot="start"></ion-icon>
+              </ion-input>
+            </ion-item>
+          </div>
+        </div>
+
+        <!-- Professional Information Section -->
+        <div class="form-section">
+          <h3 class="section-title">Professional Information</h3>
+          
+          <div class="form-row">
+            <ion-item class="form-item">
+              <ion-label position="stacked">Staff Role *</ion-label>
+              <ion-select 
+                formControlName="staffRole"
+                placeholder="Select Staff Role"
+                interface="popover">
+                <ion-select-option 
+                  *ngFor="let role of staffRoles" 
+                  [value]="role">
+                  {{ role }}
+                </ion-select-option>
+              </ion-select>
+              <ion-icon name="person-outline" slot="start"></ion-icon>
+            </ion-item>
+            
+            <ion-item class="form-item">
+              <ion-label position="stacked">Company</ion-label>
+              <div class="company-section">
+                <ion-radio-group formControlName="companyType">
+                  <ion-item>
+                    <ion-radio value="supplier" slot="start"></ion-radio>
+                    <ion-label>From Supplier List</ion-label>
+                  </ion-item>
+                  <ion-item>
+                    <ion-radio value="other" slot="start"></ion-radio>
+                    <ion-label>Other</ion-label>
+                  </ion-item>
+                </ion-radio-group>
+                <ion-input 
+                  formControlName="companyName"
+                  placeholder="Enter Company Name"
+                  type="text">
+                </ion-input>
+              </div>
+            </ion-item>
+          </div>
+        </div>
+
+        <!-- Induction Section -->
+        <div class="form-section">
+          <h3 class="section-title">Induction</h3>
+          
+          <div class="induction-tabs">
+            <ion-chip 
+              [class.active]="selectedInductionType === 'general'"
+              (click)="onInductionTypeChange('general')">
+              General {{ getInductionCount() }}
+            </ion-chip>
+            <ion-chip 
+              [class.active]="selectedInductionType === 'event'"
+              (click)="onInductionTypeChange('event')">
+              Event
+            </ion-chip>
+          </div>
+
+          <div class="induction-actions">
+            <ion-button fill="clear" size="small" (click)="onReloadInductions()">
+              <ion-icon name="refresh-outline" slot="start"></ion-icon>
+              Reload
+            </ion-button>
+            <ion-button fill="clear" size="small" (click)="onAddInduction()">
+              <ion-icon name="add-circle-outline" slot="start"></ion-icon>
+              Add New
+            </ion-button>
+          </div>
+
+          <div class="induction-list">
+            <ion-item class="induction-header">
+              <ion-label>Induction</ion-label>
+              <ion-icon name="chevron-down-outline" slot="end"></ion-icon>
+            </ion-item>
+            
+            <div class="assigned-inductions">
+              <div 
+                *ngFor="let induction of assignedInductions; let i = index" 
+                class="assigned-item">
+                <ion-input 
+                  [value]="induction.name"
+                  readonly
+                  class="induction-input">
+                </ion-input>
+                <ion-button 
+                  fill="clear" 
+                  size="small" 
+                  (click)="onRemoveInduction(i)"
+                  class="remove-btn">
+                  <ion-icon name="trash-outline" color="danger"></ion-icon>
+                </ion-button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </ion-content>
+
+    <ion-footer>
+      <ion-toolbar>
+        <div class="modal-footer">
+          <ion-button fill="outline" (click)="onClose()">
+            Cancel
+          </ion-button>
+          <ion-button 
+            fill="solid" 
+            color="primary" 
+            (click)="onAddInductee()"
+            [disabled]="!inducteeForm.valid">
+            Add Inductee
+          </ion-button>
+        </div>
+      </ion-toolbar>
+    </ion-footer>
+  </ng-template>
+</ion-modal>
