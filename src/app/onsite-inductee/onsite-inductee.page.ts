@@ -20,7 +20,9 @@ import {
   IonCardSubtitle, 
   IonCardContent,
   IonButtons,
-  IonMenuButton
+  IonMenuButton,
+  IonSelect,
+  IonSelectOption
 } from '@ionic/angular/standalone';
 import { AddInducteeModalComponent } from '../add-inductee-modal/add-inductee-modal.component';
 
@@ -69,6 +71,8 @@ export interface Inductee {
     IonCardContent,
     IonButtons,
     IonMenuButton,
+    IonSelect,
+    IonSelectOption,
     AddInducteeModalComponent
   ]
 })
@@ -79,6 +83,13 @@ export class OnsiteInducteePage implements OnInit {
   totalPages: number = 1;
   itemsPerPage: number = 10;
   isAddModalOpen: boolean = false;
+  
+  inductionStatusOptions = [
+    'All Completed',
+    'All Pending', 
+    'Partially Completed',
+    'None Assigned'
+  ];
   
   inductees: Inductee[] = [
     {
@@ -256,6 +267,12 @@ export class OnsiteInducteePage implements OnInit {
 
   onEmailInductee(inductee: Inductee) {
     console.log('Email inductee:', inductee);
+  }
+
+  onInductionStatusChange(inductee: Inductee, event: any) {
+    const newStatus = event.detail.value;
+    inductee.inductions.status = newStatus;
+    console.log('Induction status changed for', inductee.name, 'to', newStatus);
   }
 
   goToPage(page: number) {

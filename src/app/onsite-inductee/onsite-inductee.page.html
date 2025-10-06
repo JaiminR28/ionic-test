@@ -87,7 +87,7 @@
             <ion-col size="1" class="header-cell">
               <ion-checkbox></ion-checkbox>
             </ion-col>
-            <ion-col size="1" class="header-cell">Id</ion-col>
+            <ion-col  size="1" class="header-cell">Id</ion-col>
             <ion-col size="2" class="header-cell">Name</ion-col>
             <ion-col size="2" class="header-cell">Inductions</ion-col>
             <ion-col size="1.5" class="header-cell">Documents</ion-col>
@@ -97,7 +97,7 @@
           </ion-row>
 
           <!-- Table Rows -->
-          <ion-row *ngFor="let inductee of getPaginatedInductees()" class="table-row">
+          <ion-row *ngFor="let inductee of getPaginatedInductees()">
             <ion-col size="1" class="data-cell">
               <ion-checkbox></ion-checkbox>
             </ion-col>
@@ -111,13 +111,18 @@
               </div>
             </ion-col>
             <ion-col size="2" class="data-cell">
-              <ion-badge [color]="getStatusColor(inductee.inductions.status)" class="status-badge">
-                <ion-icon name="checkmark-circle" *ngIf="inductee.inductions.status === 'All Completed'"></ion-icon>
-                <ion-icon name="close-circle" *ngIf="inductee.inductions.status === 'All Pending'"></ion-icon>
-                <ion-icon name="time" *ngIf="inductee.inductions.status === 'Partially Completed'"></ion-icon>
-                <ion-icon name="remove-circle" *ngIf="inductee.inductions.status === 'None Assigned'"></ion-icon>
-                {{ inductee.inductions.status }}
-              </ion-badge>
+              <ion-select 
+                [value]="inductee.inductions.status"
+                (ionChange)="onInductionStatusChange(inductee, $event)"
+                placeholder="Select Status"
+                interface="popover"
+                class="induction-select">
+                <ion-select-option 
+                  *ngFor="let status of inductionStatusOptions" 
+                  [value]="status">
+                  {{ status }}
+                </ion-select-option>
+              </ion-select>
             </ion-col>
             <ion-col size="1.5" class="data-cell">
               <div class="documents-cell">
@@ -192,9 +197,18 @@
             </div>
             <div class="card-row">
               <span class="label">Inductions:</span>
-              <ion-badge [color]="getStatusColor(inductee.inductions.status)" class="status-badge-mobile">
-                {{ inductee.inductions.status }}
-              </ion-badge>
+              <ion-select 
+                [value]="inductee.inductions.status"
+                (ionChange)="onInductionStatusChange(inductee, $event)"
+                placeholder="Select Status"
+                interface="popover"
+                class="induction-select-mobile">
+                <ion-select-option 
+                  *ngFor="let status of inductionStatusOptions" 
+                  [value]="status">
+                  {{ status }}
+                </ion-select-option>
+              </ion-select>
             </div>
             <div class="card-row">
               <span class="label">Documents:</span>
